@@ -1,1 +1,11 @@
-# sw-email-builder
+This package is still under development for testing purposes.
+
+--------------------------------
+
+## Installation
+
+```bash
+pnpm install
+```
+
+

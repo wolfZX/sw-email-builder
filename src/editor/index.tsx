@@ -20,7 +20,8 @@ import { ColumnsBubbleMenu } from './components/column-menu/columns-bubble-menu'
 import { ContentMenu } from './components/content-menu';
 import { ForBubbleMenu } from './components/for-menu/for-bubble-menu';
 import { SpacerBubbleMenu } from './components/spacer-menu/spacer-bubble-menu';
-import { DEFAULT_SLASH_COMMANDS } from './extensions/slash-command/default-slash-commands';
+import { createDefaultSlashCommands } from './extensions/slash-command/default-slash-commands';
+import { ImageConfig } from '@/blocks/image';
 
 type ParitialMailContextType = Partial<MailyContextType>;
 
@@ -40,6 +41,7 @@ export type EditorProps = {
     autofocus?: FocusPosition;
     immediatelyRender?: boolean;
   };
+  imageConfig?: ImageConfig;
 } & ParitialMailContextType;
 
 export function Editor(props: EditorProps) {
@@ -59,7 +61,7 @@ export function Editor(props: EditorProps) {
     contentHtml,
     contentJson,
     variables,
-    blocks = DEFAULT_SLASH_COMMANDS,
+    blocks = createDefaultSlashCommands({ imageConfig: props.imageConfig }),
     variableSuggestionChar = DEFAULT_VARIABLE_SUGGESTION_CHAR,
     payloadValueSuggestionChar = DEFAULT_PAYLOAD_VALUE_SUGGESTION_CHAR,
   } = props;

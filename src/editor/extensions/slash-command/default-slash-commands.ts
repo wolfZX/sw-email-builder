@@ -1,5 +1,5 @@
 import { button, linkCard } from '@/blocks/button';
-import { image, logo } from '@/blocks/image';
+import { createImageBlock, createLogoBlock, ImageConfig } from '@/blocks/image';
 import { columns, forLoop, section, spacer } from '@/blocks/layout';
 import { bulletList, orderedList } from '@/blocks/list';
 import { BlockItem } from '@/blocks/types';
@@ -14,15 +14,17 @@ import {
   text,
 } from '@/blocks/typography';
 
-export const DEFAULT_SLASH_COMMANDS: BlockItem[] = [
+export const createDefaultSlashCommands = (config?: {
+  imageConfig?: ImageConfig;
+}): BlockItem[] => [
   text,
   heading1,
   heading2,
   heading3,
   bulletList,
   orderedList,
-  image,
-  logo,
+  createImageBlock(config?.imageConfig),
+  createLogoBlock(config?.imageConfig),
   columns,
   section,
   forLoop,
@@ -34,3 +36,5 @@ export const DEFAULT_SLASH_COMMANDS: BlockItem[] = [
   footer,
   clearLine,
 ];
+
+export const DEFAULT_SLASH_COMMANDS = createDefaultSlashCommands();

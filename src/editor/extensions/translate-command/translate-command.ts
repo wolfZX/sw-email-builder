@@ -1,15 +1,40 @@
 import { Extension } from '@tiptap/core';
 import translate from 'translate';
 
+// ------------------------------------------------------------
+// Example Usage with custom language in the parent application:
+// import { Editor } from '@your-package/editor';
+
+// <Editor
+//   translateConfig={{
+//     fromLang: 'en',
+//     toLang: 'es'  // or any other language code
+//   }}
+//   // ... other props
+// />
+// ------------------------------------------------------------
+
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     translate: {
       toggleTranslate: () => ReturnType;
     };
   }
+
+  interface EditorProps {
+    translateSettings?: {
+      fromLang?: string;
+      toLang?: string;
+    };
+  }
 }
 
-export const TranslateExtension = Extension.create({
+interface TranslateOptions {
+  fromLang?: string;
+  toLang?: string;
+}
+
+export const TranslateExtension = Extension.create<TranslateOptions>({
   name: 'translate',
 
   addCommands() {
@@ -22,9 +47,14 @@ export const TranslateExtension = Extension.create({
 
           if (!text) return false;
 
-          // TODO: make the language configurable
+          // @ts-ignore
+          const settings = editor.options.editorProps.translateSettings;
+
           translate.engine = 'google';
-          translate(text, { from: 'en', to: 'zh' })
+          translate(text, { 
+            from: settings?.fromLang ?? 'en', 
+            to: settings?.toLang ?? 'zh' 
+          })
             .then((translated) => {
               tr.insertText(translated.toString(), from, to);
               editor.view.dispatch(tr);

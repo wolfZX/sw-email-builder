@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
-import { Editor as TiptapEditor, Extension, FocusPosition } from '@tiptap/core';
+import { useRef, useEffect } from 'react';
+import { Editor as TiptapEditor, Extension, FocusPosition, EditorOptions } from '@tiptap/core';
 import { EditorContent, JSONContent, useEditor } from '@tiptap/react';
 
 import { EditorMenuBar } from './components/editor-menu-bar';
@@ -42,6 +42,10 @@ export type EditorProps = {
     immediatelyRender?: boolean;
   };
   imageConfig?: ImageConfig;
+  translateConfig?: {
+    fromLang?: string;
+    toLang?: string;
+  };
 } & ParitialMailContextType;
 
 export function Editor(props: EditorProps) {
@@ -64,6 +68,7 @@ export function Editor(props: EditorProps) {
     blocks = createDefaultSlashCommands({ imageConfig: props.imageConfig }),
     variableSuggestionChar = DEFAULT_VARIABLE_SUGGESTION_CHAR,
     payloadValueSuggestionChar = DEFAULT_PAYLOAD_VALUE_SUGGESTION_CHAR,
+    translateConfig,
   } = props;
 
   let formattedContent: any = null;
@@ -90,6 +95,7 @@ export function Editor(props: EditorProps) {
   }
 
   const menuContainerRef = useRef(null);
+
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -107,6 +113,8 @@ export function Editor(props: EditorProps) {
           }
         },
       },
+      // @ts-ignore
+      translateSettings: translateConfig,
     },
     immediatelyRender,
     onCreate: ({ editor }) => {
@@ -121,12 +129,25 @@ export function Editor(props: EditorProps) {
         blocks,
         variableSuggestionChar,
         payloadValueSuggestionChar,
+        translateOptions: translateConfig,
       }),
       ...(extensions || []),
     ],
     content: formattedContent,
     autofocus,
   });
+
+  useEffect(() => {
+    if (editor && translateConfig) {
+      editor.setOptions({
+        editorProps: {
+          ...editor.options.editorProps,
+          // @ts-ignore
+          translateSettings: translateConfig
+        }
+      });
+    }
+  }, [editor, translateConfig?.fromLang, translateConfig?.toLang]);
 
   if (!editor) {
     return null;

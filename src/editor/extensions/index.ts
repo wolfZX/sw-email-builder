@@ -33,7 +33,12 @@ import { SlashCommand } from './slash-command/slash-command';
 import { getSlashCommandSuggestions } from './slash-command/slash-command-view';
 import { TranslateExtension } from './translate-command/translate-command';
 
-type ExtensionsProps = Partial<MailyContextType> & {};
+type ExtensionsProps = Partial<MailyContextType> & {
+  translateOptions?: {
+    fromLang?: string;
+    toLang?: string;
+  };
+};
 
 export function extensions(props: ExtensionsProps) {
   const {
@@ -41,6 +46,7 @@ export function extensions(props: ExtensionsProps) {
     blocks,
     variableSuggestionChar,
     payloadValueSuggestionChar,
+    translateOptions,
   } = props;
 
   return [
@@ -121,6 +127,9 @@ export function extensions(props: ExtensionsProps) {
     VariableExtension.configure({
       suggestion: getVariableSuggestions(variables, variableSuggestionChar),
     }),
-    TranslateExtension,
+    TranslateExtension.configure({
+      fromLang: translateOptions?.fromLang ?? 'en',
+      toLang: translateOptions?.toLang ?? 'zh',
+    }),
   ];
 }

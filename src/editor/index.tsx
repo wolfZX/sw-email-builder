@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
-import { Editor as TiptapEditor, Extension, FocusPosition, EditorOptions } from '@tiptap/core';
+import { useRef, useEffect, forwardRef } from 'react';
+import { Editor as TiptapEditor, Extension, FocusPosition } from '@tiptap/core';
 import { EditorContent, JSONContent, useEditor } from '@tiptap/react';
 
 import { EditorMenuBar } from './components/editor-menu-bar';
@@ -22,6 +22,31 @@ import { ForBubbleMenu } from './components/for-menu/for-bubble-menu';
 import { SpacerBubbleMenu } from './components/spacer-menu/spacer-bubble-menu';
 import { createDefaultSlashCommands } from './extensions/slash-command/default-slash-commands';
 import { ImageConfig } from '@/blocks/image';
+
+// -----------------------------------------------------------------------------
+// To access the editor instance, you can use the ref prop.
+// import { Editor } from 'sw-email-builder';
+// import { Editor as TiptapEditor } from '@tiptap/core';
+
+// function MyComponent() {
+//   const editorRef = useRef<TiptapEditor | null>(null);
+
+//   const switchTemplate = (newContent: string) => {
+//     if (editorRef.current) {
+//       editorRef.current.commands.setContent(newContent);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <Editor ref={editorRef} {...otherProps} />
+//       <button onClick={() => switchTemplate('new content')}>
+//         Switch Template
+//       </button>
+//     </>
+//   );
+// }
+// -----------------------------------------------------------------------------
 
 type ParitialMailContextType = Partial<MailyContextType>;
 
@@ -46,9 +71,10 @@ export type EditorProps = {
     fromLang?: string;
     toLang?: string;
   };
+  ref?: React.ForwardedRef<TiptapEditor | null>;
 } & ParitialMailContextType;
 
-export function Editor(props: EditorProps) {
+export const Editor = forwardRef<TiptapEditor | null, EditorProps>((props, ref) => {
   const {
     config: {
       wrapClassName = '',
@@ -149,6 +175,16 @@ export function Editor(props: EditorProps) {
     }
   }, [editor, translateConfig?.fromLang, translateConfig?.toLang]);
 
+  useEffect(() => {
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(editor);
+      } else {
+        ref.current = editor;
+      }
+    }
+  }, [editor, ref]);
+
   if (!editor) {
     return null;
   }
@@ -183,4 +219,4 @@ export function Editor(props: EditorProps) {
       </div>
     </MailyProvider>
   );
-}
+});

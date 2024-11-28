@@ -22,6 +22,7 @@ import { ForBubbleMenu } from './components/for-menu/for-bubble-menu';
 import { SpacerBubbleMenu } from './components/spacer-menu/spacer-bubble-menu';
 import { createDefaultSlashCommands } from './extensions/slash-command/default-slash-commands';
 import { ImageConfig } from '@/blocks/image';
+import { Slice } from '@tiptap/pm/model';
 
 // -----------------------------------------------------------------------------
 // To access the editor instance, you can use the ref prop.
@@ -55,6 +56,7 @@ export type EditorProps = {
   contentJson?: JSONContent;
   onUpdate?: (editor: TiptapEditor) => void;
   onCreate?: (editor: TiptapEditor) => void;
+  onDrop?: (e: DragEvent, slice: Slice, moved: boolean) => void;
   extensions?: Extension[];
   config?: {
     hasMenuBar?: boolean;
@@ -85,6 +87,7 @@ export const Editor = forwardRef<TiptapEditor | null, EditorProps>((props, ref) 
       autofocus = 'end',
       immediatelyRender = false,
     } = {},
+    onDrop,
     onCreate,
     onUpdate,
     extensions,
@@ -143,6 +146,9 @@ export const Editor = forwardRef<TiptapEditor | null, EditorProps>((props, ref) 
       translateSettings: translateConfig,
     },
     immediatelyRender,
+    onDrop: (e: DragEvent, slice: Slice, moved: boolean) => {
+      onDrop?.(e, slice, moved);
+    },
     onCreate: ({ editor }) => {
       onCreate?.(editor);
     },

@@ -88,7 +88,7 @@ export function VariableView(props: NodeViewProps) {
                 </div>
               </label>
 
-              <Divider />
+              {/* <Divider />
 
               <ShowPopover
                 showIfKey={showIfKey}
@@ -97,7 +97,7 @@ export function VariableView(props: NodeViewProps) {
                     showIfKey: value,
                   });
                 }}
-              />
+              /> */}
             </div>
           </TooltipProvider>
         </PopoverContent>

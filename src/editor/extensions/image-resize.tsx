@@ -6,7 +6,6 @@ import {
 import { type CSSProperties, useRef, useState } from 'react';
 import TipTapImage from '@tiptap/extension-image';
 import { useEvent } from '../utils/use-event';
-import { useEffect } from 'react';
 import { DEFAULT_SECTION_SHOW_IF_KEY } from '../nodes/section/section';
 
 const MIN_WIDTH = 20;

@@ -27,7 +27,7 @@ export const createDefaultSlashCommands = (config?: {
   createLogoBlock(config?.imageConfig),
   columns,
   section,
-  forLoop,
+  // forLoop,
   spacer,
   button,
   linkCard,

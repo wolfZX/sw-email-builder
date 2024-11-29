@@ -58,7 +58,7 @@ export function ColumnsBubbleMenuContent(props: ColumnsBubbleMenuProps) {
           }}
         />
 
-        <Divider />
+        {/* <Divider />
 
         <ShowPopover
           showIfKey={state.currentShowIfKey}
@@ -67,7 +67,7 @@ export function ColumnsBubbleMenuContent(props: ColumnsBubbleMenuProps) {
               showIfKey: value,
             });
           }}
-        />
+        /> */}
       </div>
     </TooltipProvider>
   );

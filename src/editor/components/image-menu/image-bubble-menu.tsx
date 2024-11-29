@@ -156,7 +156,7 @@ export function ImageBubbleMenu(props: EditorBubbleMenuProps) {
           </>
         )}
 
-        <Divider />
+        {/* <Divider />
         <ShowPopover
           showIfKey={state.currentShowIfKey}
           onShowIfKeyValueChange={(value) => {
@@ -167,7 +167,7 @@ export function ImageBubbleMenu(props: EditorBubbleMenuProps) {
               })
               .run();
           }}
-        />
+        /> */}
       </TooltipProvider>
     </BubbleMenu>
   );

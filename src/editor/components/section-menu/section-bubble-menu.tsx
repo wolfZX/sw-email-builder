@@ -257,7 +257,7 @@ export function SectionBubbleMenu(props: EditorBubbleMenuProps) {
           />
         </div>
 
-        <Divider />
+        {/* <Divider />
 
         <ShowPopover
           showIfKey={state.currentShowIfKey}
@@ -266,7 +266,7 @@ export function SectionBubbleMenu(props: EditorBubbleMenuProps) {
               showIfKey: value,
             });
           }}
-        />
+        /> */}
 
         {state.isColumnsActive && (
           <>

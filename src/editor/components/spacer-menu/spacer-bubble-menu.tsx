@@ -50,13 +50,13 @@ export function SpacerBubbleMenu(props: EditorBubbleMenuProps) {
           {...item}
         />
       ))}
-      <Divider />
+      {/* <Divider />
       <ShowPopover
         showIfKey={state.currentShowIfKey}
         onShowIfKeyValueChange={(value) => {
           editor.commands.setSpacerShowIfKey(value);
         }}
-      />
+      /> */}
     </BubbleMenu>
   );
 }

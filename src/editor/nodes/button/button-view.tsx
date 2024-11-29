@@ -195,7 +195,7 @@ export function ButtonView(props: NodeViewProps) {
                 />
               </div>
 
-              <Divider />
+              {/* <Divider />
 
               <ShowPopover
                 showIfKey={showIfKey}
@@ -204,7 +204,7 @@ export function ButtonView(props: NodeViewProps) {
                     showIfKey: value,
                   });
                 }}
-              />
+              /> */}
             </div>
           </TooltipProvider>
         </PopoverContent>

@@ -120,7 +120,7 @@ export function ForBubbleMenu(props: EditorBubbleMenuProps) {
           </form>
         )}
 
-        <Divider />
+        {/* <Divider />
         <ShowPopover
           showIfKey={state.currentShowIfKey}
           onShowIfKeyValueChange={(value) => {
@@ -128,7 +128,7 @@ export function ForBubbleMenu(props: EditorBubbleMenuProps) {
               showIfKey: value,
             });
           }}
-        />
+        /> */}
       </TooltipProvider>
     </BubbleMenu>
   );

@@ -30,4 +30,11 @@ export default defineConfig([
     },
     outDir: 'dist/blocks',
   },
+  {
+    ...packageOptions,
+    entry: {
+      'default-slash-commands': 'src/editor/extensions/slash-command/default-slash-commands.ts',
+    },
+    outDir: 'dist/editor/extensions/slash-command',
+  },
 ]);

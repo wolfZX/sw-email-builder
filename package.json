@@ -20,6 +20,11 @@
       "browser": "./dist/blocks/index.mjs",
       "import": "./dist/blocks/index.mjs",
       "require": "./dist/blocks/index.js"
+    },
+    "./slash-commands": {
+      "browser": "./dist/editor/extensions/slash-command/default-slash-commands.mjs",
+      "import": "./dist/editor/extensions/slash-command/default-slash-commands.mjs",
+      "require": "./dist/editor/extensions/slash-command/default-slash-commands.js"
     }
   },
   "typesVersions": {
@@ -29,13 +34,17 @@
       ],
       "blocks": [
         "dist/blocks/index.d.ts"
+      ],
+      "slash-commands": [
+        "dist/editor/extensions/slash-command/default-slash-commands.d.ts"
       ]
     }
   },
   "scripts": {
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
-    "build": "tsup"
+    "build": "tsup",
+    "pack-build": "pnpm build && pnpm pack"
   },
   "repository": {
     "type": "git",

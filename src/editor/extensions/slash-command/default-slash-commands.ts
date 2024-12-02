@@ -30,7 +30,7 @@ export const createDefaultSlashCommands = (config?: {
   // forLoop,
   spacer,
   button,
-  linkCard,
+  // linkCard,
   hardBreak,
   blockquote,
   footer,

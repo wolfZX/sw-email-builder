@@ -102,9 +102,19 @@ function ResizableImageTemplate(props: NodeViewProps) {
   width = !width || width === 0 ? '100%' : width;
   height = !height || height === 0 ? '100%' : height;
 
-  // Convert width/height to numbers only if they're pixel values
-  const numericWidth = typeof width === 'number' ? width : width;
-  const numericHeight = typeof height === 'number' ? height : height;
+  const imageElement = (
+    <img
+      {...attrs}
+      ref={imgRef}
+      style={{
+        width: typeof width === 'number' ? `${width}px` : width,
+        height: typeof height === 'number' ? `${height}px` : height,
+        ...resizingStyle,
+        cursor: 'default',
+        marginBottom: 0,
+      }}
+    />
+  );
 
   return (
     <NodeViewWrapper
@@ -127,17 +137,18 @@ function ResizableImageTemplate(props: NodeViewProps) {
         }[alignment as string] || {}),
       }}
     >
-      <img
-        {...attrs}
-        ref={imgRef}
-        style={{
-          width: typeof width === 'number' ? `${width}px` : width,
-          height: typeof height === 'number' ? `${height}px` : height,
-          ...resizingStyle,
-          cursor: 'default',
-          marginBottom: 0,
-        }}
-      />
+      {externalLink ? (
+        <a
+          href={externalLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => {e.preventDefault()}}
+        >
+          {imageElement}
+        </a>
+      ) : (
+        imageElement
+      )}
       {selected && (
         <>
           {/* Don't use a simple border as it pushes other content around. */}
@@ -225,17 +236,13 @@ export const ResizableImageExtension = TipTapImage.extend({
       },
       externalLink: {
         default: null,
-        renderHTML: ({ externalLink }) => {
-          if (!externalLink) {
-            return {};
-          }
-          return {
-            'data-external-link': externalLink,
-          };
-        },
         parseHTML: (element) => {
-          const externalLink = element.getAttribute('data-external-link');
-          return externalLink ? { externalLink } : null;
+          // If image is wrapped in <a>, get the href
+          const parent = element.parentElement;
+          if (parent?.tagName.toLowerCase() === 'a') {
+            return parent.getAttribute('href');
+          }
+          return null;
         },
       },
 
@@ -261,5 +268,23 @@ export const ResizableImageExtension = TipTapImage.extend({
   },
   addNodeView() {
     return ReactNodeViewRenderer(ResizableImageTemplate);
+  },
+  renderHTML({ HTMLAttributes }) {
+    const { externalLink, ...attrs } = HTMLAttributes;
+
+    const img = ['img', {
+      ...attrs,
+      style: `${attrs.style || ''}`
+    }] as const;
+
+    if (externalLink) {
+      return ['a', {
+        href: externalLink,
+        target: '_blank',
+        rel: 'noopener noreferrer'
+      }, img] as const;
+    }
+
+    return img;
   },
 });

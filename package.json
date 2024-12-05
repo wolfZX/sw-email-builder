@@ -1,6 +1,6 @@
 {
   "name": "sw-email-builder",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Minimalistic email builder.",
   "private": false,
   "main": "./dist/index.js",

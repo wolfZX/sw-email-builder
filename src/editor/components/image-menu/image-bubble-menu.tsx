@@ -119,10 +119,17 @@ export function ImageBubbleMenu(props: EditorBubbleMenuProps) {
           {state.isImageActive && (
             <LinkPrompt
               type="image_external_link"
-              linkUrl={state?.imageExternalLink ?? ''}
+              linkUrl={editor.getAttributes('link').href || ''}
               editor={editor}
-              title="Image External URL"
-              tooltip="External URL"
+              title="Image External Link URL"
+              tooltip="ExternalLink URL"
+              onCommand={(url) => {
+                if (!url) {
+                  editor.chain().focus().unsetLink().run();
+                } else {
+                  editor.chain().focus().setLink({ href: url }).run();
+                }
+              }}
             />
           )}
         </div>

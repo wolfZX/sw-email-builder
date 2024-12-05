@@ -138,7 +138,7 @@ export function ImageBubbleMenu(props: EditorBubbleMenuProps) {
                 onValueChange={(value) => {
                   editor
                     ?.chain()
-                    .updateAttributes('image', { width: value })
+                    .updateAttributes('image', { width: value || "100%" })
                     .run();
                 }}
               />
@@ -148,7 +148,7 @@ export function ImageBubbleMenu(props: EditorBubbleMenuProps) {
                 onValueChange={(value) => {
                   editor
                     ?.chain()
-                    .updateAttributes('image', { height: value })
+                    .updateAttributes('image', { height: value || "100%" })
                     .run();
                 }}
               />

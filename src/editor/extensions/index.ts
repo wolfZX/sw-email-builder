@@ -11,6 +11,7 @@ import Underline from '@tiptap/extension-underline';
 import Document from '@tiptap/extension-document';
 import Focus from '@tiptap/extension-focus';
 import Dropcursor from '@tiptap/extension-dropcursor';
+import { Plugin, PluginKey } from 'prosemirror-state';
 
 import { HorizontalRule } from './horizontal-rule';
 import { Footer } from '../nodes/footer';
@@ -52,6 +53,19 @@ export function extensions(props: ExtensionsProps) {
   return [
     Document.extend({
       content: '(block|columns)+',
+      renderHTML({ HTMLAttributes }) {
+        return ['div', { 
+          class: 'email-container', 
+          style: [
+            'max-width: 600px',
+            'margin: 0 auto',
+            'width: 100%',
+            'text-align: left',
+            'box-sizing: border-box',
+            'padding: 0',
+          ].join('; ')
+        }, ['div', HTMLAttributes, 0]]
+      },
     }),
     Columns,
     Column,

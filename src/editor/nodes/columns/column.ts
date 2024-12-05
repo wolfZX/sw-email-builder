@@ -56,15 +56,21 @@ export const Column = Node.create({
       },
       width: {
         default: DEFAULT_COLUMN_WIDTH,
-        parseHTML: (element) =>
-          element.style.width.replace(/['"]+/g, '') || DEFAULT_COLUMN_WIDTH,
+        parseHTML: (element) => {
+          const width = element.style.width?.replace(/['"px%]+/g, '');
+          return width ? (width.includes('.') ? width + '%' : parseInt(width, 10)) : DEFAULT_COLUMN_WIDTH;
+        },
         renderHTML: (attributes) => {
           if (!attributes.width || attributes.width === DEFAULT_COLUMN_WIDTH) {
             return {};
           }
 
+          const widthValue = typeof attributes.width === 'number' 
+            ? `${attributes.width}px` 
+            : attributes.width;
+
           return {
-            style: `width: ${attributes.width}%;max-width:${attributes.width}%`,
+            style: `width: ${widthValue}; max-width: ${widthValue};`,
           };
         },
       },

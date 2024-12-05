@@ -44,7 +44,10 @@ function ResizableImageTemplate(props: NodeViewProps) {
       const removeListeners = () => {
         window.removeEventListener('mousemove', mouseMoveHandler);
         window.removeEventListener('mouseup', removeListeners);
-        updateAttributes({ width: newWidth, height: newHeight });
+        updateAttributes({ 
+          width: newWidth, 
+          height: newHeight 
+        });
         setResizingStyle(undefined);
       };
 
@@ -92,8 +95,12 @@ function ResizableImageTemplate(props: NodeViewProps) {
     );
   }
 
-  let { alignment = 'center', width, height } = node.attrs || {};
+  let { alignment = 'center', width = '100%', height = '100%' } = node.attrs || {};
   const { externalLink, showIfKey, ...attrs } = node.attrs || {};
+
+  // Convert width/height to numbers only if they're pixel values
+  const numericWidth = typeof width === 'number' ? width : width;
+  const numericHeight = typeof height === 'number' ? height : height;
 
   return (
     <NodeViewWrapper
@@ -101,8 +108,8 @@ function ResizableImageTemplate(props: NodeViewProps) {
       draggable
       data-drag-handle
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width: typeof width === 'number' ? `${width}px` : width,
+        height: typeof height === 'number' ? `${height}px` : height,
         ...resizingStyle,
         overflow: 'hidden',
         position: 'relative',
@@ -161,29 +168,52 @@ export const ResizableImageExtension = TipTapImage.extend({
         default: 'block',
         parseHTML: (element) => {
           const display = element.style.display;
-          return display ? { display } : null;
+          return display ? display : null;
         },
-        renderHTML: ({ display }) => ({ style: `display: ${display}` }),
+        renderHTML: (attributes) => ({
+          style: 'display: block',
+        }),
       },
       width: {
         default: '100%',
         parseHTML: (element) => {
-          const width = element.style.width;
-          return width ? { width } : null;
+          const width = element.style.width?.replace('px', '');
+          return width ? parseInt(width, 10) : null;
         },
-        renderHTML: ({ width }) => ({ style: `width: ${width}` }),
+        renderHTML: (attributes) => {
+          // Ensure width is rendered with px for numbers
+          if (typeof attributes.width === 'number') {
+            return { 
+              style: `width: ${attributes.width}px`,
+              'data-width': attributes.width // Backup attribute
+            };
+          }
+          return { style: `width: ${attributes.width}` };
+        },
       },
       height: {
         default: '100%',
         parseHTML: (element) => {
-          const height = element.style.height;
-          return height ? { height } : null;
+          const height = element.style.height?.replace('px', '');
+          return height ? parseInt(height, 10) : null;
         },
-        renderHTML: ({ height }) => ({ style: `height: ${height}` }),
+        renderHTML: (attributes) => {
+          // Ensure height is rendered with px for numbers
+          if (typeof attributes.height === 'number') {
+            return { 
+              style: `height: ${attributes.height}px`,
+              'data-height': attributes.height // Backup attribute
+            };
+          }
+          return { style: `height: ${attributes.height}` };
+        },
       },
       alignment: {
         default: 'center',
-        renderHTML: ({ alignment }) => ({ 'data-alignment': alignment }),
+        renderHTML: ({ alignment }) => ({
+          style: alignment === 'center' ? 'margin: 0 auto; display: block' : '',
+          'data-alignment': alignment,
+        }),
         parseHTML: (element) =>
           element.getAttribute('data-alignment') || 'center',
       },

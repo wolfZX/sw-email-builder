@@ -1,6 +1,6 @@
 type ImageSizeProps = {
-  value: number;
-  onValueChange: (value: number) => void;
+  value: number | string;
+  onValueChange: (value: number | string) => void;
   dimension: 'width' | 'height';
 };
 
@@ -8,9 +8,14 @@ export function ImageSize(props: ImageSizeProps) {
   const { value, onValueChange, dimension } = props;
 
   const handleChange = (newValue: string) => {
+    if (!newValue) {
+      onValueChange('100%');
+      return;
+    }
+
     const numValue = parseInt(newValue, 10);
     if (isNaN(numValue)) {
-      onValueChange(0);
+      onValueChange('100%');
     } else if (numValue > 600) {
       onValueChange(600);
     } else {
@@ -26,7 +31,7 @@ export function ImageSize(props: ImageSizeProps) {
       <input
         className="hide-number-controls mly-h-auto mly-max-w-20 mly-appearance-none mly-border-0 mly-border-none mly-p-1 mly-px-[26px] mly-text-sm mly-uppercase mly-tabular-nums mly-outline-none focus-visible:mly-outline-none"
         type="number"
-        value={value || '100%'}
+        value={typeof value === 'number' ? value : ''}
         onChange={(e) => handleChange(e.target.value)}
         max="600"
       />

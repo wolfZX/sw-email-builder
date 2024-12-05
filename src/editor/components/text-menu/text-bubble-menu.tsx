@@ -5,26 +5,25 @@ import {
   ItalicIcon,
   List,
   ListOrdered,
-  Link,
   LucideIcon,
   StrikethroughIcon,
   UnderlineIcon,
   LanguagesIcon,
+  HeadingIcon,
 } from 'lucide-react';
 import { BubbleMenuButton } from '../bubble-menu-button';
-import { ColorPicker } from '../ui/color-picker';
 import { BaseButton } from '../base-button';
 import { useTextMenuState } from './use-text-menu-state';
 import { isCustomNodeSelected } from '@/editor/utils/is-custom-node-selected';
 import { isTextSelected } from '@/editor/utils/is-text-selected';
 import { TooltipProvider } from '../ui/tooltip';
-import { LinkInputPopover } from '../ui/link-input-popover';
 import { Divider } from '../ui/divider';
 import { AlignmentSwitch } from '../alignment-switch';
 import { SVGIcon } from '../icons/grid-lines';
-import { useState } from 'react';
 import { LinkPrompt } from '../ui/link-prompt';
 import { ColorPickerPrompt } from '../ui/color-picker-prompt';
+import { TypographyPrompt } from '../ui/typography-prompt';
+import { Level } from '@tiptap/extension-heading';
 
 export interface BubbleMenuItem {
   name?: string;
@@ -205,6 +204,21 @@ export function TextBubbleMenu(props: EditorBubbleMenuProps) {
 
         <Divider />
 
+        <TypographyPrompt
+          typography={state.currentHeadingLevel || 0}
+          onTypographyChange={(typography) => {
+            if (typography === 0) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor
+                .chain()
+                .focus()
+                .toggleHeading({ level: typography as Level })
+                .run();
+            }
+          }}
+          tooltip="Font Styles"
+        />
         {/* TODO: Disabled until have fix when use with Bubble Menu*/}
         {/* <ColorPicker
           color={state.currentTextColor}

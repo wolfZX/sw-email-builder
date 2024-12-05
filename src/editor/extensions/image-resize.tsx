@@ -98,6 +98,10 @@ function ResizableImageTemplate(props: NodeViewProps) {
   let { alignment = 'center', width = '100%', height = '100%' } = node.attrs || {};
   const { externalLink, showIfKey, ...attrs } = node.attrs || {};
 
+  // Ensure we're using '100%' when width/height is empty or 0
+  width = !width || width === 0 ? '100%' : width;
+  height = !height || height === 0 ? '100%' : height;
+
   // Convert width/height to numbers only if they're pixel values
   const numericWidth = typeof width === 'number' ? width : width;
   const numericHeight = typeof height === 'number' ? height : height;
@@ -127,6 +131,8 @@ function ResizableImageTemplate(props: NodeViewProps) {
         {...attrs}
         ref={imgRef}
         style={{
+          width: typeof width === 'number' ? `${width}px` : width,
+          height: typeof height === 'number' ? `${height}px` : height,
           ...resizingStyle,
           cursor: 'default',
           marginBottom: 0,
@@ -177,15 +183,15 @@ export const ResizableImageExtension = TipTapImage.extend({
       width: {
         default: '100%',
         parseHTML: (element) => {
-          const width = element.style.width?.replace('px', '');
-          return width ? parseInt(width, 10) : null;
+          const width = element.style.width;
+          if (!width) return '100%';
+          return width.includes('px') ? parseInt(width, 10) : width;
         },
         renderHTML: (attributes) => {
-          // Ensure width is rendered with px for numbers
           if (typeof attributes.width === 'number') {
             return { 
               style: `width: ${attributes.width}px`,
-              'data-width': attributes.width // Backup attribute
+              'data-width': attributes.width
             };
           }
           return { style: `width: ${attributes.width}` };
@@ -194,15 +200,15 @@ export const ResizableImageExtension = TipTapImage.extend({
       height: {
         default: '100%',
         parseHTML: (element) => {
-          const height = element.style.height?.replace('px', '');
-          return height ? parseInt(height, 10) : null;
+          const height = element.style.height;
+          if (!height) return '100%';
+          return height.includes('px') ? parseInt(height, 10) : height;
         },
         renderHTML: (attributes) => {
-          // Ensure height is rendered with px for numbers
           if (typeof attributes.height === 'number') {
             return { 
               style: `height: ${attributes.height}px`,
-              'data-height': attributes.height // Backup attribute
+              'data-height': attributes.height
             };
           }
           return { style: `height: ${attributes.height}` };

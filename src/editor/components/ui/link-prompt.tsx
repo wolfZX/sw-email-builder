@@ -55,9 +55,7 @@ export function LinkPrompt(props: LinkPromptProps) {
         editor?.chain().updateAttributes('image', { src: inputValue }).run();
       }
     } else if (type === 'image_external_link') {
-      editor?.chain()
-        .setLink({ href: inputValue })
-        .run();
+      editor?.chain().updateAttributes('image', { externalLink: inputValue }).run();
     }
   };
 

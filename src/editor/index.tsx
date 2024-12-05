@@ -144,10 +144,6 @@ export const Editor = forwardRef<TiptapEditor | null, EditorProps>((props, ref) 
       },
       // @ts-ignore
       translateSettings: translateConfig,
-      // Add parsing rules for linked images
-      parseOptions: {
-        preserveWhitespace: true,
-      },
     },
     immediatelyRender,
     onDrop: (e: DragEvent, slice: Slice, moved: boolean) => {

@@ -257,20 +257,8 @@ export const ResizableImageExtension = TipTapImage.extend({
           };
         },
       },
-      inline: {
-        default: true,
-        renderHTML: () => ({
-          'data-inline': 'true',
-        }),
-      },
-      draggable: {
-        default: true,
-      },
     };
   },
-  group: 'inline block',
-  draggable: true,
-  selectable: true,
   addNodeView() {
     return ReactNodeViewRenderer(ResizableImageTemplate);
   },

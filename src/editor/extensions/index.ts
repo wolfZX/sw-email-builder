@@ -11,6 +11,7 @@ import Underline from '@tiptap/extension-underline';
 import Document from '@tiptap/extension-document';
 import Focus from '@tiptap/extension-focus';
 import Dropcursor from '@tiptap/extension-dropcursor';
+import { Plugin, PluginKey } from 'prosemirror-state';
 
 import { HorizontalRule } from './horizontal-rule';
 import { Footer } from '../nodes/footer';
@@ -121,18 +122,8 @@ export function extensions(props: ExtensionsProps) {
         rel: 'noopener noreferrer nofollow',
       },
       openOnClick: false,
-      linkOnPaste: true,
-      protocols: [],
-      autolink: true,
-      validate: (url) => true,
     }),
-    ResizableImageExtension.configure({
-      inline: true,
-      allowBase64: true,
-      HTMLAttributes: {
-        class: 'resizable-image',
-      },
-    }),
+    ResizableImageExtension,
     LinkCardExtension,
     Focus,
     SectionExtension,

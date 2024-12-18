@@ -158,17 +158,89 @@ export const ButtonExtension = Node.create({
   parseHTML() {
     return [
       {
+        // Parse div structure (from editor)
         tag: `div[data-type="${this.name}"]`,
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
+    const {
+      'data-text': dataText,
+      'data-url': dataURL,
+      'data-alignment': dataAlignment,
+      'data-variant': dataVariant,
+      'data-border-radius': dataBorderRadius,
+      'data-button-color': dataButtonColor,
+      'data-text-color': dataTextColor,
+      'data-show-if-key': dataShowIfKey,
+    } = HTMLAttributes;
+
+    const text = dataText || 'Button';
+    const url = dataURL || '';
+    const alignment = dataAlignment || DEFAULT_BUTTON_ALIGNMENT;
+    const variant = dataVariant || DEFAULT_BUTTON_VARIANT;
+    const borderRadius = dataBorderRadius || DEFAULT_BUTTON_BORDER_RADIUS;
+    const buttonColor = dataButtonColor || DEFAULT_BUTTON_BACKGROUND_COLOR;
+    const textColor = dataTextColor || DEFAULT_BUTTON_TEXT_COLOR;
+    const showIfKey = dataShowIfKey || DEFAULT_SECTION_SHOW_IF_KEY;
+
+    const buttonStyle = `
+      display: inline-block;
+      padding: 12px 32px;
+      background-color: ${variant === 'filled' ? buttonColor : 'transparent'};
+      color: ${textColor};
+      text-decoration: none;
+      border: ${variant === 'outline' ? `2px solid ${buttonColor}` : 'none'};
+      border-radius: ${
+        borderRadius === 'sharp' ? '0' :
+        borderRadius === 'smooth' ? '4px' : '999px'
+      };
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.5;
+      mso-padding-alt: 0;
+      mso-text-raise: 0;
+      mso-line-height-rule: exactly;
+    `;
+
     return [
       'div',
       mergeAttributes(HTMLAttributes, {
         'data-type': this.name,
+        'data-button': '',
       }),
+      [
+        'table',
+        {
+          border: '0',
+          cellpadding: '0',
+          cellspacing: '0',
+          role: 'presentation',
+          style: 'width: 100%; margin: 0;',
+        },
+        [
+          'tr',
+          {},
+          [
+            'td',
+            { align: alignment },
+            [
+              'a',
+              {
+                href: url || '#',
+                style: buttonStyle,
+                target: '_blank',
+                'data-variant': variant,
+                'data-border-radius': borderRadius,
+                ...(showIfKey ? { 'data-show-if-key': showIfKey } : {}),
+              },
+              text || 'Button'
+            ]
+          ]
+        ]
+      ]
     ];
   },
 

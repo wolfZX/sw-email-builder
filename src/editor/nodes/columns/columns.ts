@@ -92,6 +92,7 @@ export const Columns = Node.create({
       'div',
       mergeAttributes(HTMLAttributes, {
         'data-type': 'columns',
+        style: 'display: flex; gap: 8px; margin: 0; padding: 0;',
       }),
       0,
     ];

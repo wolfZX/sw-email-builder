@@ -76,7 +76,7 @@ export const Column = Node.create({
       },
       verticalAlign: {
         default: DEFAULT_COLUMN_VERTICAL_ALIGN,
-        parseHTML: (element) => element?.style?.verticalAlign || 'top',
+        parseHTML: (element) => element?.getAttribute('data-vertical-align') || 'top',
         renderHTML: (attributes) => {
           const { verticalAlign } = attributes;
           if (
@@ -88,10 +88,12 @@ export const Column = Node.create({
 
           if (verticalAlign === 'middle') {
             return {
+              'data-vertical-align': verticalAlign,
               style: `display: flex;flex-direction: column;justify-content: center;`,
             };
           } else if (verticalAlign === 'bottom') {
             return {
+              'data-vertical-align': verticalAlign,
               style: `display: flex;flex-direction: column;justify-content: flex-end;`,
             };
           }
@@ -107,11 +109,25 @@ export const Column = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
+    const { 'data-vertical-align': dataVerticalAlign } = HTMLAttributes;
+    const haveAlignment = ['middle', 'bottom'].includes(dataVerticalAlign);
+
+    const columnStyle = `
+      flex-basis: 0;
+      flex-grow: 1;
+      overflow: auto;
+      display: ${haveAlignment ? 'flex' : 'table-cell'};
+      ${haveAlignment ? 'flex-direction: column;' : ''}
+      ${dataVerticalAlign === 'middle' ? 'justify-content: center;' : ''}
+      ${dataVerticalAlign === 'bottom' ? 'justify-content: flex-end;' : ''}
+    `;
+
     return [
       'div',
       mergeAttributes(HTMLAttributes, {
         'data-type': 'column',
         class: 'hide-scrollbars',
+        style: columnStyle,
       }),
       0,
     ];

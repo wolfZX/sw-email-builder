@@ -31,17 +31,16 @@ export function ColumnsBubbleMenuContent(props: ColumnsBubbleMenuProps) {
         {state.isColumnActive && (
           <>
             <ColumnsWidthConfig
+              tooltip="Columns configuration"
               columnsCount={currentColumnCount}
               columnWidths={state.columnWidths}
-              onColumnsCountChange={(count) => {
+              onColumnConfigChange={(count, widths) => {
                 if (count > currentColumnCount) {
                   addColumnByIndex(editor);
                 } else {
                   removeColumnByIndex(editor);
                 }
-              }}
-              onColumnWidthChange={(index, width) => {
-                updateColumnWidth(editor, index, width);
+                updateColumnWidth(editor, widths);
               }}
             />
 

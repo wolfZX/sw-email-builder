@@ -212,11 +212,7 @@ export function goToColumn(editor: Editor, type: 'next' | 'previous') {
   return true;
 }
 
-export function updateColumnWidth(
-  editor: Editor,
-  index: number,
-  width: string = 'auto'
-) {
+export function updateColumnWidth(editor: Editor, widths: string[]) {
   const { node: columnsNode, pos: columnsNodePos = 0 } =
     getClosestNodeByName(editor, 'columns') || {};
   if (!columnsNode) {
@@ -232,7 +228,7 @@ export function updateColumnWidth(
       child.type.create(
         {
           ...child?.attrs,
-          width: i === index ? width : child?.attrs?.width,
+          width: widths[i] || child?.attrs?.width || 'auto',
         },
         child.content
       )

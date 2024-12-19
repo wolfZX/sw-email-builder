@@ -54,9 +54,7 @@ export function TypographyPrompt(props: TypographyPromptProps) {
           size="sm"
           type="button"
         >
-          <HeadingIcon
-          className="mly-h-3 mly-w-3 mly-shrink-0 mly-stroke-[2.5]"
-        />
+          <HeadingIcon className="mly-h-3 mly-w-3 mly-shrink-0 mly-stroke-[2.5]"/>
         </BaseButton>
     </Dialog.Trigger>
   );

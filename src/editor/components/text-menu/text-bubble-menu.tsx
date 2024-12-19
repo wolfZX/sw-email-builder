@@ -9,7 +9,6 @@ import {
   StrikethroughIcon,
   UnderlineIcon,
   LanguagesIcon,
-  HeadingIcon,
 } from 'lucide-react';
 import { BubbleMenuButton } from '../bubble-menu-button';
 import { BaseButton } from '../base-button';

@@ -49,6 +49,7 @@ export const Footer = Node.create<FooterOptions>({
     return [
       'small',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        style: 'display: block',
         class: 'footer mly-block mly-text-[13px] mly-text-slate-500',
       }),
       0,

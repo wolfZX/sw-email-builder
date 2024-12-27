@@ -58,16 +58,14 @@ export const Column = Node.create({
         default: DEFAULT_COLUMN_WIDTH,
         parseHTML: (element) => {
           const width = element.style.width?.replace(/['"px%]+/g, '');
-          return width ? (width.includes('.') ? width + '%' : parseInt(width, 10)) : DEFAULT_COLUMN_WIDTH;
+          return width || DEFAULT_COLUMN_WIDTH;
         },
         renderHTML: (attributes) => {
           if (!attributes.width || attributes.width === DEFAULT_COLUMN_WIDTH) {
             return {};
           }
 
-          const widthValue = typeof attributes.width === 'number' 
-            ? `${attributes.width}px` 
-            : attributes.width;
+          const widthValue = attributes.width === 'auto' ? 'auto' : `${attributes.width}%`;
 
           return {
             style: `width: ${widthValue}; max-width: ${widthValue};`,
@@ -113,6 +111,7 @@ export const Column = Node.create({
     const haveAlignment = ['middle', 'bottom'].includes(dataVerticalAlign);
 
     const columnStyle = `
+      word-break: break-word;
       flex-basis: 0;
       flex-grow: 1;
       overflow: auto;

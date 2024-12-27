@@ -8,7 +8,7 @@ import {
   removeColumnByIndex,
   updateColumnWidth,
 } from '@/editor/utils/columns';
-import { ShowPopover } from '../show-popover';
+// import { ShowPopover } from '../show-popover';
 import { ColumnsWidthConfig } from './columns-width-config';
 
 type ColumnsBubbleMenuProps = {
@@ -35,10 +35,12 @@ export function ColumnsBubbleMenuContent(props: ColumnsBubbleMenuProps) {
               columnsCount={currentColumnCount}
               columnWidths={state.columnWidths}
               onColumnConfigChange={(count, widths) => {
-                if (count > currentColumnCount) {
-                  addColumnByIndex(editor);
-                } else {
-                  removeColumnByIndex(editor);
+                if (count !== currentColumnCount) {
+                  if (count > currentColumnCount) {
+                    addColumnByIndex(editor);
+                  } else {
+                    removeColumnByIndex(editor);
+                  }
                 }
                 updateColumnWidth(editor, widths);
               }}
